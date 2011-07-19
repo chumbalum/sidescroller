@@ -35,42 +35,38 @@ class Playing < GameState
     @explosions.each{|explosion| explosion.update}
     @enemyBullets.each{|bullet| bullet.update}
     
-    @bullets.reject!{|bullet|
-      @enemies.reject!{|enemy|
-        if(bullet.collides_with(enemy))
-          @explosions << Explosion.new(@window, enemy.x, enemy.y)
+    @bullets.each{|bullet|
+      bullet.kill if(bullet.x > 800)
+      @enemies.each{|enemy|
+        if bullet.collides_with(enemy)
+          bullet.kill
+          enemy.kill
           Game.sounds[:explosion].play
-          true
+          @explosions << Explosion.new(@window, enemy.x, enemy.y)
         end
-      } || (bullet.x > 800)
+      }
     }
-    
-        
-    @enemyBullets.reject!{|bullet|      
+          
+    @enemyBullets.each{|bullet|
+      bullet.kill if(bullet.x < 0)
       if(bullet.collides_with(@player))
+        bullet.kill
         @player.get_damage
-        true
-      elsif(bullet.x < 0)
-        true
-      else
-        false
       end
     }
     
-    @explosions.reject!{|explosion|
-      explosion.dead?
-    }
-    
-    @enemies.reject!{|enemy|      
-      if(enemy.x + enemy.width < 0)
-        true
-      elsif(enemy.collides_with(@player))
+    @explosions.each{|explosion| explosion.update }
+      
+    @enemies.each{|enemy|      
+      if(enemy.collides_with(@player))
+        enemy.kill
         Game.sounds[:explosion].play
         @player.get_damage
         @explosions << Explosion.new(@window, enemy.x, enemy.y)
-        true
+      elsif(enemy.x+enemy.width < 0)
+        enemy.kill
       end
-    }  
+    }
     
     if(@timer.time_passed?(500))
       wave = @levelparser.next_wave
@@ -90,6 +86,15 @@ class Playing < GameState
       @gameengine.pushState(Gameover.new(@window, @gameengine))
     end
     
+    cleanup
+    
+  end
+  
+  def cleanup
+    @bullets.delete_if{|bullet| bullet.dead?}
+    @enemyBullets.delete_if{|bullet| bullet.dead?}
+    @enemies.delete_if{|enemy| enemy.dead?}
+    @explosions.delete_if{|explosion| explosion.dead? }
   end
     
   def draw
