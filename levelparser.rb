@@ -5,7 +5,12 @@ class Levelparser
     
     @level = []
       
-    file = File.new("levels/level1.txt")
+    @level_dir = Dir.entries("levels")
+    
+    @level_dir.shift
+    @level_dir.shift
+      
+    file = File.new("levels/"+@level_dir.shift)
     file.each{|line| @level << line.strip.split(//) }
     file.close
   end

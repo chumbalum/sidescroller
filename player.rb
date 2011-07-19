@@ -34,7 +34,6 @@ class Player < Sprite
     @window.draw_quad(10,10,Gosu::Color::RED, 10+@life*2,10,Gosu::Color::RED,
                       10,20,Gosu::Color::RED, 10+@life*2,20,Gosu::Color::RED)
     super
-
   end
           
 end

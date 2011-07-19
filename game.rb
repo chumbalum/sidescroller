@@ -13,7 +13,7 @@ class Game < Gosu::Window
   def initialize
     super(800, 600, false)
     self.caption = "Sidescroller"
-    
+        
     @gameengine = GameEngine.new(self)
     @gameengine.pushState(MainMenu.new(self, @gameengine))
     
@@ -24,8 +24,7 @@ class Game < Gosu::Window
     load_images
     load_fonts
     load_sounds
-    
-    Game.sounds[:music].play
+    #Game.sounds[:music].play
   end
 
   # Override
@@ -74,7 +73,7 @@ class Game < Gosu::Window
     @@sounds[:menu_scrolling] = Gosu::Sample.new(self, "sounds/menu_scrolling.wav")
     @@sounds[:menu_select] = Gosu::Sample.new(self, "sounds/menu_select.wav")
       
-    @@sounds[:music] = Gosu::Sample.new(self, "sounds/music.mp3")
+    #@@sounds[:music] = Gosu::Sample.new(self, "sounds/music.mp3")
   end
   
   def self.images

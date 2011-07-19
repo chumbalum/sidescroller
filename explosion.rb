@@ -16,6 +16,5 @@ class Explosion < Sprite
     @image = @animation[@lifetime]
     @image.draw(@x, @y, 0) if !dead?
   end
-  
     
 end

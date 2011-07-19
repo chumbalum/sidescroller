@@ -28,7 +28,7 @@ class Options < GameState
         end
     end
   end
-  
+
   def draw
     Game.images[:background].draw(0,0,0)
     
